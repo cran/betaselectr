@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2024-11-08" />
+
+<title>Beta-Select Demonstration: SEM by ‘lavaan’</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Beta-Select Demonstration: SEM by
+‘lavaan’</h1>
+<h4 class="date">2024-11-08</h4>
+
+
+
+<div id="introduction" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>This article demonstrates how to use <code>lav_betaselect()</code>
+from the package <a href="https://sfcheung.github.io/betaselectr/"><code>betaselectr</code></a>
+to standardize selected variables in a model fitted by
+<code>lavaan</code> and forming confidence intervals for the
+parameters.</p>
+</div>
+<div id="data-and-model" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Data and Model</h1>
+<p>The sample dataset from the package <code>betaselectr</code> will be
+used in this demonstration:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(betaselectr)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">head</span>(data_test_medmod)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt;          dv       iv      mod      med     cov1     cov2</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt; 1  7.487873 11.42573 16.65805 42.28988 54.14051 15.56069</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; 2  8.474931 16.64790 22.66332 42.08692 39.21125 17.61286</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; 3 11.206539 14.81278 22.80955 32.76869 31.97963 20.77333</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; 4 10.148827 15.79632 22.94451 43.96807 42.72187 15.66971</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt; 5  7.421606 14.29621 24.51562 37.10942 42.74174 21.97132</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt; 6  6.846435 12.00819 25.22163 35.46051 30.85914 22.35444</span></span></code></pre></div>
+<p>This is the path model, fitted by <code>lavaan::sem()</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; This is lavaan 0.6-19</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; lavaan is FREE software! Please report any bugs.</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>mod <span class="ot">&lt;-</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="st">med ~ iv + mod + iv:mod + cov1 + cov2</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="st">dv ~ med + iv + cov1 + cov2</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>           data_test_medmod)</span></code></pre></div>
+<p>The model has a moderator, <code>mod</code>, posited to moderate the
+effect from <code>iv</code> to <code>med</code>. The product term is
+<code>iv:mod</code>.</p>
+<p>These are the results:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">summary</span>(fit)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; lavaan 0.6-19 ended normally after 2 iterations</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;   Estimator                                         ML</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt;   Optimization method                           NLMINB</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;   Number of model parameters                        11</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt;   Number of observations                           200</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; Model Test User Model:</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt;                                                       </span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt;   Test statistic                                 2.303</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt;   Degrees of freedom                                 2</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt;   P-value (Chi-square)                           0.316</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; Parameter Estimates:</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt;   Standard errors                             Standard</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt;   Information                                 Expected</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;   Information saturated (h1) model          Structured</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; Regressions:</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt;                    Estimate   Std.Err  z-value  P(&gt;|z|)</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt;   med ~                                                </span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt;     iv                -6.373    0.985   -6.473    0.000</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt;     mod               -3.899    0.614   -6.346    0.000</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt;     iv:mod             0.286    0.039    7.340    0.000</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt;     cov1              -0.093    0.070   -1.327    0.185</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt;     cov2               0.242    0.133    1.823    0.068</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt;   dv ~                                                 </span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt;     med                0.092    0.011    8.098    0.000</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt;     iv                 0.227    0.038    5.896    0.000</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt;     cov1              -0.006    0.013   -0.454    0.650</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt;     cov2               0.030    0.025    1.230    0.219</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; Variances:</span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt;                    Estimate   Std.Err  z-value  P(&gt;|z|)</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co">#&gt;    .med               60.292    6.029   10.000    0.000</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="co">#&gt;    .dv                 2.087    0.209   10.000    0.000</span></span></code></pre></div>
+</div>
+<div id="problems-with-standardization" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Problems With
+Standardization</h1>
+<p>We can request the standardized solution using
+<code>lavaan::standardizedSolution()</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">standardizedSolution</span>(fit,</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                     <span class="at">output =</span> <span class="st">&quot;text&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; Regressions:</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;                     est.std  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt;   med ~                                                                 </span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;     iv               -1.855    0.259   -7.158    0.000   -2.363   -1.347</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;     mod              -1.956    0.280   -6.988    0.000   -2.504   -1.407</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;     iv:mod            3.588    0.428    8.390    0.000    2.750    4.426</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt;     cov1             -0.077    0.058   -1.332    0.183   -0.189    0.036</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;     cov2              0.105    0.057    1.836    0.066   -0.007    0.218</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;   dv ~                                                                  </span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;     med               0.459    0.052    8.845    0.000    0.357    0.560</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt;     iv                0.331    0.053    6.279    0.000    0.228    0.434</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt;     cov1             -0.024    0.054   -0.454    0.650   -0.130    0.081</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt;     cov2              0.066    0.054    1.233    0.218   -0.039    0.171</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; Variances:</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt;                     est.std  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt;    .med               0.656    0.050   13.243    0.000    0.559    0.753</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt;    .dv                0.569    0.050   11.353    0.000    0.471    0.667</span></span></code></pre></div>
+<p>However, for this model, there are several problems:</p>
+<ul>
+<li><p>The product term, <code>iv:mod</code>, is also standardized. This
+is inappropriate. One simple but underused solution is to standardize
+the variables <em>before</em> forming the product term <span class="citation">(Friedrich, 1982)</span>.</p></li>
+<li><p>The confidence intervals are formed using the delta-method, which
+has been found to be inferior to methods such as nonparametric
+percentile bootstrap confidence interval for the standardized solution
+<span class="citation">(Falk, 2018)</span>. Although there are
+situations in which the delta-method confidence and the nonparametric
+percentile bootstrap confidences can be similar (e.g., sample size is
+large and the sample estimates are not extreme), it is still safe to at
+least try both methods and compare the results.</p></li>
+<li><p>There are cases in which some variables are measured by
+meaningful units and do not need to be standardized. for example, if
+<code>cov1</code> is age measured by year, then age is more meaningful
+than “standardized age”.</p></li>
+<li><p>In path analysis, categorical variables are usually represented
+by dummy variables, each of them having only two possible values (0 or
+1). It is not meaningful to standardize the dummy variables.</p></li>
+</ul>
+</div>
+<div id="beta-select-lav_betaselect" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Beta-Select
+<code>lav_betaselect()</code></h1>
+<p>The function <code>lav_betaselect()</code> can be used to solve this
+problem by:</p>
+<ul>
+<li><p>standardizing variables before product terms are formed,</p></li>
+<li><p>standardizing only variables for which standardization can
+facilitate interpretation, and</p></li>
+<li><p>forming confidence intervals that take into account selected
+standardization.</p></li>
+</ul>
+<p>We call the coefficients computed by this kind of standardization
+<em>beta</em>s-select (<span class="math inline">\(\beta{s}_{Select}\)</span>, <span class="math inline">\(\beta_{Select}\)</span> in singular form), to
+differentiate them from coefficients computed by standardizing all
+variables, including product terms.</p>
+<div id="estimates-only" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Estimates Only</h2>
+<p>Suppose we only need to solve the first problem, with the product
+term computed after <code>iv</code> and <code>mod</code> are
+standardized:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>fit_beta <span class="ot">&lt;-</span> <span class="fu">lav_betaselect</span>(fit)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>fit_beta</span></code></pre></div>
+<p>This is the output if printed using the default options:</p>
+<pre><code>#&gt; 
+#&gt; Selected Standardization:
+#&gt;                     
+#&gt;  Standard Error: Nil
+#&gt; 
+#&gt; Parameter Estimates Settings:
+#&gt;                                              
+#&gt;  Standard errors:                  Standard  
+#&gt;  Information:                      Expected  
+#&gt;  Information saturated (h1) model: Structured
+#&gt; 
+#&gt; Regressions:
+#&gt;            BetaSelect
+#&gt;  med ~               
+#&gt;   iv           -1.855
+#&gt;   mod          -1.956
+#&gt;   iv:mod        0.400
+#&gt;   cov1         -0.077
+#&gt;   cov2          0.105
+#&gt;  dv ~                
+#&gt;   med           0.459
+#&gt;   iv            0.331
+#&gt;   cov1         -0.024
+#&gt;   cov2          0.066
+#&gt; 
+#&gt; Footnote:
+#&gt; - Variable(s) standardized: cov1, cov2, dv, iv, med, mod
+#&gt; - Call &#39;print()&#39; and set &#39;standardized_only&#39; to &#39;FALSE&#39; to print both
+#&gt;   original estimates and betas-select.
+#&gt; - Product terms (iv:mod) have variables standardized before computing
+#&gt;   them. The product term(s) is/are not standardized.</code></pre>
+<p>Compared to the solution with the product term standardized, the
+coefficient of <code>iv:mod</code> changed substantially from 3.588 to
+0.286. As shown by <span class="citation">Cheung et al. (2022)</span>,
+the coefficient of <em>standardized</em> product term
+(<code>iv:mod</code>) can be substantially different from the properly
+standardized product term (the product of standardized <code>iv</code>
+and standardized <code>mod</code>).</p>
+<p>The footnote will also indicate variables that are standardized, and
+remarked that product terms are formed <em>after</em>
+standardization.</p>
+</div>
+<div id="estimates-and-bootstrap-confidence-interval" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Estimates and
+Bootstrap Confidence Interval</h2>
+<p>Suppose we want to address both the first and the second problems,
+with</p>
+<ul>
+<li><p>the product term computed after <code>iv</code> and
+<code>mod</code> standardized, and</p></li>
+<li><p>bootstrap confidence intervals used, that take into account the
+sampling variation of the standardizers (the standard
+deviations).</p></li>
+</ul>
+<p>We can call <code>lav_betaselect()</code> again, with additional
+arguments set:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>fit_beta <span class="ot">&lt;-</span> <span class="fu">lav_betaselect</span>(fit,</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                           <span class="at">std_se =</span> <span class="st">&quot;bootstrap&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                           <span class="at">bootstrap =</span> <span class="dv">5000</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>                           <span class="at">iseed =</span> <span class="dv">2345</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>                           <span class="at">parallel =</span> <span class="st">&quot;snow&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>                           <span class="at">ncpus =</span> <span class="dv">20</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; Finding product terms in the model ...</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; Finished finding product terms.</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; Compute bootstrapping standardized solution:</span></span></code></pre></div>
+<p>These are the additional arguments:</p>
+<ul>
+<li><p><code>std_se</code>: The method to compute the standard errors as
+well as confidence intervals. Set to <code>&quot;bootstrap&quot;</code> for
+nonparametric bootstrapping.</p></li>
+<li><p><code>iseed</code>: The seed for the random number generator used
+for bootstrapping. Set this to an integer to make the results
+reproducible.</p></li>
+<li><p><code>parallel</code>: The method to be used for parallel
+processing. It will be passed to <code>lavaan::bootstrapLavaan()</code>.
+Supported values are <code>&quot;none&quot;</code>, <code>&quot;snow&quot;</code>, and
+<code>&quot;multicore&quot;</code>.</p></li>
+<li><p><code>ncpus</code>: The number of CPU cores to use if
+<code>parallel</code> processing is not <code>&quot;none&quot;</code>. Default is
+<code>parallel::detectCores(logical = FALSE) - 1</code>, or the number
+of <em>physical</em> cores minus one.</p></li>
+</ul>
+<p>This is the output if printed with default options:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>fit_beta</span></code></pre></div>
+<pre><code>#&gt; 
+#&gt; Selected Standardization:
+#&gt;                                              
+#&gt;  Standard Error:      Nonparametric bootstrap
+#&gt;  Bootstrap samples:   5000                   
+#&gt;  Confidence Interval: Percentile             
+#&gt;  Level of Confidence: 95.0%                  
+#&gt; 
+#&gt; Parameter Estimates Settings:
+#&gt;                                              
+#&gt;  Standard errors:                  Standard  
+#&gt;  Information:                      Expected  
+#&gt;  Information saturated (h1) model: Structured
+#&gt; 
+#&gt; Regressions:
+#&gt;            BetaSelect    SE      Z p-value Sig  CI.Lo  CI.Hi CI.Sig
+#&gt;  med ~                                                             
+#&gt;   iv           -1.855 0.248 -7.490   0.000 *** -2.307 -1.332   Sig.
+#&gt;   mod          -1.956 0.281 -6.950   0.000 *** -2.453 -1.348   Sig.
+#&gt;   iv:mod        0.400 0.047  8.565   0.000 ***  0.298  0.481   Sig.
+#&gt;   cov1         -0.077 0.057 -1.353   0.185     -0.186  0.038   n.s.
+#&gt;   cov2          0.105 0.061  1.725   0.094   . -0.019  0.219   n.s.
+#&gt;  dv ~                                                              
+#&gt;   med           0.459 0.052  8.828   0.000 ***  0.348  0.553   Sig.
+#&gt;   iv            0.331 0.051  6.480   0.000 ***  0.229  0.431   Sig.
+#&gt;   cov1         -0.024 0.058 -0.418   0.686     -0.137  0.090   n.s.
+#&gt;   cov2          0.066 0.058  1.139   0.259     -0.050  0.178   n.s.
+#&gt; 
+#&gt; Footnote:
+#&gt; - Variable(s) standardized: cov1, cov2, dv, iv, med, mod
+#&gt; - Sig codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; - Standard errors, p-values, and confidence intervals are not computed
+#&gt;   for betas-select which are fixed in the standardized solution.
+#&gt; - P-values for betas-select are asymmetric bootstrap p-value computed
+#&gt;   by the method of Asparouhov and Muthén (2021).
+#&gt; - Call &#39;print()&#39; and set &#39;standardized_only&#39; to &#39;FALSE&#39; to print both
+#&gt;   original estimates and betas-select.
+#&gt; - Product terms (iv:mod) have variables standardized before computing
+#&gt;   them. The product term(s) is/are not standardized.</code></pre>
+<p>In this dataset, with 200 cases, the delta-method confidence
+intervals are close to the bootstrap confidence intervals, except
+obviously for the product term because the coefficient of the product
+term has substantially different values in the two solutions.</p>
+</div>
+<div id="estimates-and-bootstrap-confidence-intervals-with-only-selected-variables-standardized" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Estimates and
+Bootstrap Confidence Intervals, With Only Selected Variables
+Standardized</h2>
+<p>Suppose we want to address also the the third issue, and standardize
+only some of the variables. This can be done using either
+<code>to_standardize</code> or <code>not_to_standardize</code>.</p>
+<ul>
+<li><p>Use <code>to_standardize</code> when the number of variables to
+standardize is much fewer than the number of variables not to
+standardize.</p></li>
+<li><p>Use <code>not_to_standardize</code> when the number variables to
+standardize is much more than the the number of variables not to
+standardize.</p></li>
+</ul>
+<p>For example, suppose we only need to standardize <code>dv</code> and
+<code>iv</code>, <code>cov1</code>, and <code>cov2</code>, this is the
+call to do this, setting <code>to_standardize</code> to
+<code>c(&quot;iv&quot;, &quot;dv&quot;, &quot;cov1&quot;, &quot;cov2&quot;)</code>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>fit_beta_select_1 <span class="ot">&lt;-</span> <span class="fu">lav_betaselect</span>(fit,</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>                                    <span class="at">std_se =</span> <span class="st">&quot;bootstrap&quot;</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>                                    <span class="at">to_standardize =</span> <span class="fu">c</span>(<span class="st">&quot;iv&quot;</span>, <span class="st">&quot;dv&quot;</span>, <span class="st">&quot;cov1&quot;</span>, <span class="st">&quot;cov2&quot;</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>                                    <span class="at">bootstrap =</span> <span class="dv">5000</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>                                    <span class="at">iseed =</span> <span class="dv">2345</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>                                    <span class="at">parallel =</span> <span class="st">&quot;snow&quot;</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>                                    <span class="at">ncpus =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p>If we want to standardize all variables except for <code>dv</code>
+and <code>mod</code>, we can use this call, and set
+<code>not_to_standardize</code> to <code>c(&quot;mod&quot;, &quot;dv&quot;)</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>fit_beta_select_2 <span class="ot">&lt;-</span> <span class="fu">lav_betaselect</span>(fit,</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>                                    <span class="at">std_se =</span> <span class="st">&quot;bootstrap&quot;</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>                                    <span class="at">not_to_standardize =</span> <span class="fu">c</span>(<span class="st">&quot;mod&quot;</span>, <span class="st">&quot;dv&quot;</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>                                    <span class="at">bootstrap =</span> <span class="dv">5000</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>                                    <span class="at">iseed =</span> <span class="dv">2345</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>                                    <span class="at">parallel =</span> <span class="st">&quot;snow&quot;</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>                                    <span class="at">ncpus =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p>The results of these calls are identical, and only those of the
+second version are printed:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>fit_beta_select_2</span></code></pre></div>
+<pre><code>#&gt; Selected Standardization:
+#&gt;                                              
+#&gt;  Standard Error:      Nonparametric bootstrap
+#&gt;  Bootstrap samples:   5000                   
+#&gt;  Confidence Interval: Percentile             
+#&gt;  Level of Confidence: 95.0%                  
+#&gt; 
+#&gt; Parameter Estimates Settings:
+#&gt;                                              
+#&gt;  Standard errors:                  Standard  
+#&gt;  Information:                      Expected  
+#&gt;  Information saturated (h1) model: Structured
+#&gt; 
+#&gt; Regressions:
+#&gt;            BetaSelect    SE      Z p-value Sig  CI.Lo  CI.Hi CI.Sig
+#&gt;  med ~                                                             
+#&gt;   iv           -1.855 0.248 -7.490   0.000 *** -2.307 -1.332   Sig.
+#&gt;   mod          -0.407 0.059 -6.950   0.000 *** -0.510 -0.280   Sig.
+#&gt;   iv:mod        0.083 0.010  8.565   0.000 ***  0.062  0.100   Sig.
+#&gt;   cov1         -0.077 0.057 -1.353   0.185     -0.186  0.038   n.s.
+#&gt;   cov2          0.105 0.061  1.725   0.094   . -0.019  0.219   n.s.
+#&gt;  dv ~                                                              
+#&gt;   med           0.878 0.116  7.567   0.000 ***  0.635  1.092   Sig.
+#&gt;   iv            0.634 0.100  6.337   0.000 ***  0.430  0.826   Sig.
+#&gt;   cov1         -0.047 0.112 -0.418   0.686     -0.265  0.168   n.s.
+#&gt;   cov2          0.126 0.111  1.137   0.259     -0.093  0.345   n.s.
+#&gt; 
+#&gt; Footnote:
+#&gt; - Variable(s) standardized: cov1, cov2, iv, med
+#&gt; - Sig codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; - Standard errors, p-values, and confidence intervals are not computed
+#&gt;   for betas-select which are fixed in the standardized solution.
+#&gt; - P-values for betas-select are asymmetric bootstrap p-value computed
+#&gt;   by the method of Asparouhov and Muthén (2021).
+#&gt; - Call &#39;print()&#39; and set &#39;standardized_only&#39; to &#39;FALSE&#39; to print both
+#&gt;   original estimates and betas-select.
+#&gt; - Product terms (iv:mod) have variables standardized before computing
+#&gt;   them. The product term(s) is/are not standardized.</code></pre>
+<p>The footnotes show that, by specifying that <code>dv</code> and
+<code>mod</code> are not standardized, all the other four variables are
+standardized: <code>iv</code>, <code>med</code>, <code>cov1</code>, and
+<code>cov2</code>. Therefore, in this case, it is more convenient to use
+<code>not_to_standardize</code>.</p>
+<p>When reporting <em>beta</em>s-<em>select</em>, researchers need to
+state which variables are standardized and which are not. This can be
+done in table notes, or in a column of the parameter estimate tables.
+The output can of <code>lav_betaselect()</code> can be printed with
+<code>show_Bs.by</code> set to <code>TRUE</code> to demonstrate the
+second approach:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">print</span>(fit_beta_select_2,</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>      <span class="at">show_Bs.by =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>#&gt; Regressions:
+#&gt;            BetaSelect    SE      Z p-value Sig  CI.Lo  CI.Hi CI.Sig  Selected
+#&gt;  med ~                                                                       
+#&gt;   iv           -1.855 0.248 -7.490   0.000 *** -2.307 -1.332   Sig.    iv,med
+#&gt;   mod          -0.407 0.059 -6.950   0.000 *** -0.510 -0.280   Sig.       med
+#&gt;   iv:mod        0.083 0.010  8.565   0.000 ***  0.062  0.100   Sig.    iv,med
+#&gt;   cov1         -0.077 0.057 -1.353   0.185     -0.186  0.038   n.s.  cov1,med
+#&gt;   cov2          0.105 0.061  1.725   0.094   . -0.019  0.219   n.s.  cov2,med
+#&gt;  dv ~                                                                        
+#&gt;   med           0.878 0.116  7.567   0.000 ***  0.635  1.092   Sig.       med
+#&gt;   iv            0.634 0.100  6.337   0.000 ***  0.430  0.826   Sig.        iv
+#&gt;   cov1         -0.047 0.112 -0.418   0.686     -0.265  0.168   n.s.      cov1
+#&gt;   cov2          0.126 0.111  1.137   0.259     -0.093  0.345   n.s.      cov2
+#&gt; 
+#&gt; Footnote:
+#&gt; - Variable(s) standardized: cov1, cov2, iv, med
+#&gt; - Sig codes: 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; - Standard errors, p-values, and confidence intervals are not computed
+#&gt;   for betas-select which are fixed in the standardized solution.
+#&gt; - P-values for betas-select are asymmetric bootstrap p-value computed
+#&gt;   by the method of Asparouhov and Muthén (2021).
+#&gt; - Call &#39;print()&#39; and set &#39;standardized_only&#39; to &#39;FALSE&#39; to print both
+#&gt;   original estimates and betas-select.
+#&gt; - The column &#39;Selected&#39; lists variable(s) standardized when computing
+#&gt;   the standardized coefficient of a parameter. (&#39;NA&#39; for user-defined
+#&gt;   parameters because they are computed from other standardized
+#&gt;   parameters.)
+#&gt; - Product terms (iv:mod) have variables standardized before computing
+#&gt;   them. The product term(s) is/are not standardized.</code></pre>
+</div>
+<div id="categorical-variables" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Categorical
+Variables</h2>
+<p>When calling <code>lav_betaselect()</code>, variables with only two
+values in the dataset are assumed to be categorical and will not be
+standardized by default. This can be overriden by setting
+<code>skip_categorical_x</code> to <code>FALSE</code>, though not
+recommended.</p>
+</div>
+</div>
+<div id="conclusion" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Conclusion</h1>
+<p>In structural equation modeling, there are situations in which
+standardizing all variables is not appropriate, or when standardization
+needs to be done before forming product terms. We are not aware of tools
+that can do appropriate standardization <em>and</em> form confidence
+intervals that takes into account the selective standardization. By
+promoting the use of <em>beta</em>s-<em>select</em> using
+<code>lav_betaselect()</code>, we hope to make it easier for researchers
+to do appropriate Standardization in when reporting SEM results.</p>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0" line-spacing="2">
+<div id="ref-cheung_improving_2022" class="csl-entry">
+Cheung, S. F., Cheung, S.-H., Lau, E. Y. Y., Hui, C. H., &amp; Vong, W.
+N. (2022). Improving an old way to measure moderation effect in
+standardized units. <em>Health Psychology</em>, <em>41</em>(7), 502–505.
+<a href="https://doi.org/10.1037/hea0001188">https://doi.org/10.1037/hea0001188</a>
+</div>
+<div id="ref-falk_are_2018" class="csl-entry">
+Falk, C. F. (2018). Are robust standard errors the best approach for
+interval estimation with nonnormal data in structural equation modeling?
+<em>Structural Equation Modeling: A Multidisciplinary Journal</em>,
+<em>25</em>(2), 244–266. <a href="https://doi.org/10.1080/10705511.2017.1367254">https://doi.org/10.1080/10705511.2017.1367254</a>
+</div>
+<div id="ref-friedrich_defense_1982" class="csl-entry">
+Friedrich, R. J. (1982). In defense of multiplicative terms in multiple
+regression equations. <em>American Journal of Political Science</em>,
+<em>26</em>(4), 797–833. <a href="https://doi.org/10.2307/2110973">https://doi.org/10.2307/2110973</a>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
