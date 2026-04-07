@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2025-10-01" />
+<meta name="date" content="2026-04-07" />
 
 <title>Beta-Select Demonstration: SEM by ‘lavaan’</title>
 
@@ -362,7 +362,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Beta-Select Demonstration: SEM by
 ‘lavaan’</h1>
-<h4 class="date">2025-10-01</h4>
+<h4 class="date">2026-04-07</h4>
 
 
 
@@ -396,19 +396,21 @@ so is also mean-centered, and it is involved in an interaction (e.g.,
 recomputed accordingly.</p>
 <p>This is the path model, fitted by <code>lavaan::sem()</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>mod <span class="ot">&lt;-</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="st">&quot;</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="st">med ~ iv + mod + iv:mod + cov1 + cov2</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="st">dv ~ med + iv + cov1 + cov2</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="st">&quot;</span></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod,</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>           data_test_medmod)</span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; This is lavaan 0.6-21</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; lavaan is FREE software! Please report any bugs.</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>mod <span class="ot">&lt;-</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="st">med ~ iv + mod + iv:mod + cov1 + cov2</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="st">dv ~ med + iv + cov1 + cov2</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>           data_test_medmod)</span></code></pre></div>
 <p>The model has a moderator, <code>mod</code>, posited to moderate the
 effect from <code>iv</code> to <code>med</code>. The product term is
 <code>iv:mod</code>.</p>
 <p>These are the results:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">summary</span>(fit)</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; lavaan 0.6-20 ended normally after 2 iterations</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; lavaan 0.6-21 ended normally after 2 iterations</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;   Estimator                                         ML</span></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt;   Optimization method                           NLMINB</span></span>
@@ -531,23 +533,26 @@ standardized:</p>
 #&gt;  Information saturated (h1) model: Structured
 #&gt; 
 #&gt; Regressions:
-#&gt;            BetaSelect
-#&gt;  med ~               
-#&gt;   iv            0.182
-#&gt;   mod           0.165
-#&gt;   iv:mod        0.400
-#&gt;   cov1         -0.077
-#&gt;   cov2          0.105
-#&gt;  dv ~                
-#&gt;   med           0.459
-#&gt;   iv            0.331
-#&gt;   cov1         -0.024
-#&gt;   cov2          0.066
+#&gt;            BetaSelect UStd
+#&gt;  med ~                    
+#&gt;   iv            0.182     
+#&gt;   mod           0.165     
+#&gt;   iv:mod        0.400     
+#&gt;   cov1         -0.077     
+#&gt;   cov2          0.105     
+#&gt;  dv ~                     
+#&gt;   med           0.459     
+#&gt;   iv            0.331     
+#&gt;   cov1         -0.024     
+#&gt;   cov2          0.066     
 #&gt; 
 #&gt; Footnote:
 #&gt; - Variable(s) standardized: cov1, cov2, dv, iv, med, mod
 #&gt; - Call &#39;print()&#39; and set &#39;standardized_only&#39; to &#39;FALSE&#39; to print both
 #&gt;   original estimates and betas-select.
+#&gt; - &#39;U&#39; in the column &#39;UStd&#39; denotes that a parameter is the original one
+#&gt;   (unstandardized). That is, no variables related to it are
+#&gt;   standardized.
 #&gt; - Product terms (iv:mod) have variables standardized before computing
 #&gt;   them. The product term(s) is/are not standardized.</code></pre>
 <p>Compared to the solution with the product term standardized, the
@@ -583,7 +588,7 @@ arguments set:</p>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>                           <span class="at">ncpus =</span> <span class="dv">20</span>)</span>
 <span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; Finding product terms in the model ...</span></span>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; Finished finding product terms.</span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; Generating bootstrap estimates ...</span></span>
 <span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; Compute bootstrapping standardized solution:</span></span></code></pre></div>
 <p>These are the additional arguments:</p>
 <ul>
@@ -619,18 +624,18 @@ of <em>physical</em> cores minus one.</p></li>
 #&gt;  Information saturated (h1) model: Structured
 #&gt; 
 #&gt; Regressions:
-#&gt;            BetaSelect    SE      Z p-value Sig  CI.Lo CI.Hi CI.Sig
-#&gt;  med ~                                                            
-#&gt;   iv            0.182 0.061  2.992   0.005  **  0.063 0.300   Sig.
-#&gt;   mod           0.165 0.069  2.389   0.015   *  0.028 0.303   Sig.
-#&gt;   iv:mod        0.400 0.047  8.565   0.000 ***  0.298 0.481   Sig.
-#&gt;   cov1         -0.077 0.057 -1.353   0.185     -0.186 0.038   n.s.
-#&gt;   cov2          0.105 0.061  1.725   0.094   . -0.019 0.219   n.s.
-#&gt;  dv ~                                                             
-#&gt;   med           0.459 0.052  8.828   0.000 ***  0.348 0.553   Sig.
-#&gt;   iv            0.331 0.051  6.480   0.000 ***  0.229 0.431   Sig.
-#&gt;   cov1         -0.024 0.058 -0.418   0.686     -0.137 0.090   n.s.
-#&gt;   cov2          0.066 0.058  1.139   0.259     -0.050 0.178   n.s.
+#&gt;            BetaSelect    SE      Z p-value Sig  CI.Lo CI.Hi CI.Sig UStd
+#&gt;  med ~                                                                 
+#&gt;   iv            0.182 0.061  2.992   0.005  **  0.063 0.300   Sig.     
+#&gt;   mod           0.165 0.069  2.389   0.015   *  0.028 0.303   Sig.     
+#&gt;   iv:mod        0.400 0.047  8.565   0.000 ***  0.298 0.481   Sig.     
+#&gt;   cov1         -0.077 0.057 -1.353   0.185     -0.186 0.038   n.s.     
+#&gt;   cov2          0.105 0.061  1.725   0.094   . -0.019 0.219   n.s.     
+#&gt;  dv ~                                                                  
+#&gt;   med           0.459 0.052  8.828   0.000 ***  0.348 0.553   Sig.     
+#&gt;   iv            0.331 0.051  6.480   0.000 ***  0.229 0.431   Sig.     
+#&gt;   cov1         -0.024 0.058 -0.418   0.686     -0.137 0.090   n.s.     
+#&gt;   cov2          0.066 0.058  1.139   0.259     -0.050 0.178   n.s.     
 #&gt; 
 #&gt; Footnote:
 #&gt; - Variable(s) standardized: cov1, cov2, dv, iv, med, mod
@@ -641,8 +646,8 @@ of <em>physical</em> cores minus one.</p></li>
 #&gt;   by the method of Asparouhov and Muthén (2021).
 #&gt; - Call &#39;print()&#39; and set &#39;standardized_only&#39; to &#39;FALSE&#39; to print both
 #&gt;   original estimates and betas-select.
-#&gt; - Product terms (iv:mod) have variables standardized before computing
-#&gt;   them. The product term(s) is/are not standardized.</code></pre>
+#&gt; - &#39;U&#39; in the column &#39;UStd&#39; denotes that a parameter is the original one
+#&gt;   (unstandardized). That is, no variables related to it are</code></pre>
 <p>In this dataset, with 200 cases, the delta-method confidence
 intervals are close to the bootstrap confidence intervals, except
 obviously for the product term because the coefficient of the product
@@ -701,18 +706,18 @@ second version are printed:</p>
 #&gt;  Information saturated (h1) model: Structured
 #&gt; 
 #&gt; Regressions:
-#&gt;            BetaSelect    SE      Z p-value Sig  CI.Lo CI.Hi CI.Sig
-#&gt;  med ~                                                            
-#&gt;   iv            0.182 0.061  2.992   0.005  **  0.063 0.300   Sig.
-#&gt;   mod           0.034 0.014  2.389   0.015   *  0.006 0.063   Sig.
-#&gt;   iv:mod        0.083 0.010  8.565   0.000 ***  0.062 0.100   Sig.
-#&gt;   cov1         -0.077 0.057 -1.353   0.185     -0.186 0.038   n.s.
-#&gt;   cov2          0.105 0.061  1.725   0.094   . -0.019 0.219   n.s.
-#&gt;  dv ~                                                             
-#&gt;   med           0.878 0.116  7.567   0.000 ***  0.635 1.092   Sig.
-#&gt;   iv            0.634 0.100  6.337   0.000 ***  0.430 0.826   Sig.
-#&gt;   cov1         -0.047 0.112 -0.418   0.686     -0.265 0.168   n.s.
-#&gt;   cov2          0.126 0.111  1.137   0.259     -0.093 0.345   n.s.
+#&gt;            BetaSelect    SE      Z p-value Sig  CI.Lo CI.Hi CI.Sig UStd
+#&gt;  med ~                                                                 
+#&gt;   iv            0.182 0.061  2.992   0.005  **  0.063 0.300   Sig.     
+#&gt;   mod           0.034 0.014  2.389   0.015   *  0.006 0.063   Sig.     
+#&gt;   iv:mod        0.083 0.010  8.565   0.000 ***  0.062 0.100   Sig.     
+#&gt;   cov1         -0.077 0.057 -1.353   0.185     -0.186 0.038   n.s.     
+#&gt;   cov2          0.105 0.061  1.725   0.094   . -0.019 0.219   n.s.     
+#&gt;  dv ~                                                                  
+#&gt;   med           0.878 0.116  7.567   0.000 ***  0.635 1.092   Sig.     
+#&gt;   iv            0.634 0.100  6.337   0.000 ***  0.430 0.826   Sig.     
+#&gt;   cov1         -0.047 0.112 -0.418   0.686     -0.265 0.168   n.s.     
+#&gt;   cov2          0.126 0.111  1.137   0.259     -0.093 0.345   n.s.     
 #&gt; 
 #&gt; Footnote:
 #&gt; - Variable(s) standardized: cov1, cov2, iv, med
@@ -723,8 +728,8 @@ second version are printed:</p>
 #&gt;   by the method of Asparouhov and Muthén (2021).
 #&gt; - Call &#39;print()&#39; and set &#39;standardized_only&#39; to &#39;FALSE&#39; to print both
 #&gt;   original estimates and betas-select.
-#&gt; - Product terms (iv:mod) have variables standardized before computing
-#&gt;   them. The product term(s) is/are not standardized.</code></pre>
+#&gt; - &#39;U&#39; in the column &#39;UStd&#39; denotes that a parameter is the original one
+#&gt;   (unstandardized). That is, no variables related to it are</code></pre>
 <p>The footnotes show that, by specifying that <code>dv</code> and
 <code>mod</code> are not standardized, all the other four variables are
 standardized: <code>iv</code>, <code>med</code>, <code>cov1</code>, and
