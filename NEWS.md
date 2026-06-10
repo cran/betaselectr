@@ -1,3 +1,10 @@
+# betaselectr 0.2.1
+
+## Miscellaneous
+
+Updated the documentation with
+the related manuscript.
+
 # betaselectr 0.1.4
 
 ## Improvement
