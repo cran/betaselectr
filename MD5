@@ -1,6 +1,7 @@
-59bc588e3b14957e16d3a8d31692d507 *DESCRIPTION
+3b4c53a4aa0b0b17efaf0275ad8a032c *DESCRIPTION
 ddb1b779a92f0f0c6a5e27e61185a871 *NAMESPACE
-394486bb4dc393cba44b9012ff3b7223 *NEWS.md
+35276a9a2123890e845853aa9b6d31ec *NEWS.md
+df6cc46bc7fae1a55b713f3d5065b35a *R/betaselectr-package.R
 062224cea9b1199bab12997d461045f6 *R/boot_ci.R
 a1465faadc96ab6b13be333c2a43de03 *R/coef_lav_betaselect.R
 22f047d1e64cbcb169e33948c194de51 *R/confint_lav_betaselect.R
@@ -8,11 +9,11 @@ a1465faadc96ab6b13be333c2a43de03 *R/coef_lav_betaselect.R
 86a7c7221f35c42990224b47c743509f *R/est2p.R
 a405eeecf4c73a9fd1697dd050857c6a *R/lav_betaselect.R
 67d83f9b163f9ef6579b98fe76f4d00f *R/lav_betaselect_helpers.R
-29842b6b8cb04945fe251aa460a74b60 *R/lm_betaselect.R
+dad58ec279382f00ccb9d71c75449590 *R/lm_betaselect.R
 2657efad96d97f242314d1ce6f904595 *R/lm_betaselect_helpers.R
 b1e889da5d5f07a9b6b7ea06c5df45ab *R/lm_betaselect_methods.R
 9709b99c109147056fb882eeff9748a9 *R/print_std_selected_lavaan.R
-757a461aacbfdecbe8545cd715df8a8f *README.md
+0f89d6ae1ad121e1a3bbf5d0b19e94c6 *README.md
 6af8e7644a2c366a25339b1923c9a048 *build/partial.rdb
 026417adfdfad2bb129065ca83da84fd *build/vignette.rds
 2bb432db433263b76ef65f7eabc2e030 *data/data_test_medmod.rda
@@ -29,6 +30,7 @@ f3dee53047cce9d29d8b93eb5f5f521a *inst/doc/betaselectr_lav.html
 b39d79969defbbf6d7a4bda4d81efe69 *inst/workflow_gen_std.md
 85af993c077eadb49423627e731368f3 *inst/workflow_lav.md
 eadcbea181f1522d541147938078689a *man/anova.lm_betaselect.Rd
+50c004f142011f602bba96ec151a64c6 *man/betaselectr-package.Rd
 157807d2efea4090727d1ad28fba2614 *man/coef.lav_betaselect.Rd
 9126bf4a9d234ed499b70d8c1f10b366 *man/coef.lm_betaselect.Rd
 33095288b0ba240c97489fd31f5b2c69 *man/confint.lav_betaselect.Rd
@@ -82,6 +84,7 @@ d6a08a18154eb740a79e1cca3c505ed3 *tests/testthat/test_glm_betaselect_skip_def.R
 06ed37c9e83a010b3e5121819c5ba80e *tests/testthat/test_lm_betaselect.R
 702db216704edd6c9167f321876d627b *tests/testthat/test_lm_betaselect_boot.R
 b0c91f841d2924c5a103b0e970b664d2 *tests/testthat/test_lm_betaselect_boot_progress.R
+7d97fea02e5eded631cdfcb427662641 *tests/testthat/test_lm_betaselect_extra_vars.R
 4c0609203af01ebd9356f62c6ff95953 *tests/testthat/test_lm_betaselect_lm_object.R
 75751845f3e4e185fdb95567372726b5 *tests/testthat/test_lm_betaselect_methods.R
 b6f2a3367ee2a0d673d10bc3a2755437 *tests/testthat/test_lm_betaselect_one_iv.R
